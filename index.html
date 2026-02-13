@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Be My Valentine</title>
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(to bottom right, #f9c6da, #f3a6c9);
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+}
+
+.card {
+  width: 650px;
+  height: 380px;
+  background: white;
+  border-radius: 25px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  text-align: center;
+  padding: 20px;
+  transition: 0.5s ease;
+}
+
+.glow { box-shadow: 0 0 40px rgba(255, 77, 109, 0.8); }
+
+/* CAT */
+.cat {
+  width: 95px;
+  height: 95px;
+  background: #f4b183;
+  border-radius: 50%;
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.cat:before,
+.cat:after {
+  content: "";
+  position: absolute;
+  top: -25px;
+  width: 0;
+  height: 0;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  border-bottom: 35px solid #f4b183;
+}
+
+.cat:before { left: 5px; }
+.cat:after { right: 5px; }
+
+.eye {
+  width: 10px;
+  height: 10px;
+  background: black;
+  border-radius: 50%;
+  position: absolute;
+  top: 38px;
+}
+
+.eye.left { left: 28px; }
+.eye.right { right: 28px; }
+
+.nose {
+  width: 8px;
+  height: 8px;
+  background: #ff7aa2;
+  border-radius: 50%;
+  position: absolute;
+  top: 55px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.heart {
+  width: 22px;
+  height: 22px;
+  background: #ff4d6d;
+  position: absolute;
+  top: -18px;
+  right: -18px;
+  transform: rotate(45deg);
+}
+
+.heart:before,
+.heart:after {
+  content: "";
+  width: 22px;
+  height: 22px;
+  background: #ff4d6d;
+  border-radius: 50%;
+  position: absolute;
+}
+
+.heart:before { top: -11px; left: 0; }
+.heart:after { left: -11px; top: 0; }
+
+h1 { font-size: 28px; }
+
+.buttons {
+  display: flex;
+  gap: 30px;
+  margin-top: 10px;
+}
+
+button {
+  padding: 12px 28px;
+  border-radius: 25px;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+/* YES BUTTON */
+#yesBtn {
+  background: #ff4d6d;
+  color: white;
+  animation: heartbeat 1s infinite;
+}
+
+#yesBtn:hover {
+  animation: none;
+  transform: scale(1.2);
+}
+
+@keyframes heartbeat {
+  0%,100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+/* NO BUTTON */
+#noBtn {
+  background: #eee;
+  position: relative;
+}
+
+/* Shy text */
+.shy-text {
+  position: absolute;
+  bottom: 15px;
+  font-size: 13px;
+  color: #999;
+  font-style: italic;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+/* Floating hearts */
+.floating-heart {
+  position: fixed;
+  width: 14px;
+  height: 14px;
+  background: #ff4d6d;
+  transform: rotate(45deg);
+  animation: floatRandom 6s linear forwards;
+  opacity: 0.8;
+}
+
+.floating-heart:before,
+.floating-heart:after {
+  content:'';
+  position:absolute;
+  width:14px;
+  height:14px;
+  background:#ff4d6d;
+  border-radius:50%;
+}
+
+.floating-heart:before { top:-7px; left:0; }
+.floating-heart:after { left:-7px; top:0; }
+
+@keyframes floatRandom {
+  0% { transform: translateY(0) rotate(45deg); opacity:1; }
+  100% { transform: translateY(-300px) rotate(45deg); opacity:0; }
+}
+
+/* Message Box */
+.message-box {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 350px;
+  max-width: 90%;
+  padding: 20px;
+  background: white;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+  border-radius: 15px;
+  font-size: 16px;
+  color: #333;
+  z-index: 1000;
+}
+
+.message-box button {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: #ff4d6d;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.message-box div {
+  padding-bottom: 40px;
+  white-space: pre-wrap;
+}
+
+/* Photos */
+.photo {
+  position: fixed;
+  width: 150px;
+  border-radius: 15px;
+  box-shadow: 0 0 40px rgba(255,105,180,0.7);
+  transition: opacity 2s ease, transform 4s ease;
+  opacity: 0;
+  z-index: 1;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card" id="card">
+
+  <div class="cat">
+    <div class="eye left"></div>
+    <div class="eye right"></div>
+    <div class="nose"></div>
+    <div class="heart"></div>
+  </div>
+
+  <h1>BAE, will you be my valentine?</h1>
+
+  <div class="buttons">
+    <button id="yesBtn">Yes</button>
+    <button id="noBtn">No</button>
+  </div>
+
+  <div class="shy-text" id="shyText">"No" seems a bit shy…</div>
+
+</div>
+
+<script>
+const card = document.getElementById("card");
+const yesBtn = document.getElementById("yesBtn");
+const noBtn = document.getElementById("noBtn");
+const shyText = document.getElementById("shyText");
+
+let shyShown = false;
+
+/* NO BUTTON */
+noBtn.addEventListener("mouseover", () => {
+  noBtn.style.position = "absolute";
+  noBtn.style.left = Math.random() * (card.clientWidth - 100) + "px";
+  noBtn.style.top = Math.random() * (card.clientHeight - 50) + "px";
+
+  if(!shyShown){
+    shyText.style.opacity = "1";
+    shyShown = true;
+  }
+});
+
+/* Floating hearts continuously */
+function createRandomHeart(){
+  const heart = document.createElement("div");
+  heart.className = "floating-heart";
+  heart.style.left = Math.random() * window.innerWidth + "px";
+  heart.style.top = window.innerHeight + "px";
+  document.body.appendChild(heart);
+  setTimeout(()=>heart.remove(),6000);
+}
+setInterval(createRandomHeart,800);
+
+/* Typewriter */
+function typeWriter(text, element, speed=40){
+  let i=0;
+  function typing(){
+    if(i<text.length){
+      element.innerHTML+=text.charAt(i);
+      i++;
+      setTimeout(typing,speed);
+    }
+  }
+  typing();
+}
+
+/* Photos with soft glow + random positions avoiding overlap */
+function showPhotos(){
+  const photos=["photo1.jpg","photo2.jpg","photo3.jpg","photo4.jpg","photo5.jpg","photo6.jpg","photo7.jpg","photo8.jpg","photo9.jpg","photo10.jpg"];
+  const placed = []; // store existing photo positions
+  const cardRect = card.getBoundingClientRect();
+
+  photos.forEach((src,i)=>{
+    setTimeout(()=>{
+      const img = document.createElement("img");
+      img.src = src;
+      img.className="photo";
+
+      const maxX = window.innerWidth - 180;
+      const maxY = window.innerHeight - 180;
+
+      let x, y;
+      let tries = 0;
+      do {
+        x = Math.random() * maxX;
+        y = Math.random() * maxY;
+        tries++;
+      } while (
+        (
+          x + 150 > cardRect.left && x < cardRect.right &&
+          y + 150 > cardRect.top && y < cardRect.bottom
+        ) || placed.some(p=>Math.abs(p.x-x)<160 && Math.abs(p.y-y)<160)
+        && tries < 100
+      );
+
+      placed.push({x, y});
+      img.style.left = x + "px";
+      img.style.top = y + "px";
+
+      document.body.appendChild(img);
+      setTimeout(()=>{ img.style.opacity="1"; },100);
+
+      // Slight floating
+      const floatDistance = 20 + Math.random()*20;
+      let direction = 1;
+      setInterval(()=>{
+        img.style.transform = `translateY(${direction*floatDistance}px)`;
+        direction *= -1;
+      }, 4000 + Math.random()*2000);
+
+      // Fade out after 20s
+      setTimeout(()=>{ img.remove(); },20000);
+
+    }, i*500);
+  });
+}
+
+/* YES BUTTON */
+yesBtn.addEventListener("click", ()=>{
+  const audio = new Audio("aagipovali_kaalam.mp3");
+  audio.play();
+
+  card.classList.add("glow");
+  card.innerHTML=`<h1 style="color:#ff4d6d;">Yaaay Baegaa.., you are officially my valentine! ❤️</h1>`;
+
+  // Surprise button in peach
+  const surpriseBtn = document.createElement("button");
+  surpriseBtn.textContent = "Tap me to make your heart smile a little more ✨ ✨";
+  surpriseBtn.style.marginTop="20px";
+  surpriseBtn.style.background="#ffb47c";
+  surpriseBtn.style.color="white";
+  surpriseBtn.style.padding="12px 28px";
+  surpriseBtn.style.borderRadius="25px";
+  surpriseBtn.style.border="none";
+  surpriseBtn.style.cursor="pointer";
+
+  card.appendChild(surpriseBtn);
+
+  surpriseBtn.addEventListener("click", ()=>{
+    const box = document.createElement("div");
+    box.className="message-box";
+    document.body.appendChild(box);
+
+    const textContainer = document.createElement("div");
+    box.appendChild(textContainer);
+
+    const closeBtn = document.createElement("button");
+    closeBtn.textContent="Close";
+    closeBtn.onclick=()=>box.remove();
+    box.appendChild(closeBtn);
+
+    typeWriter(
+`BAEGAA… after 9 wonderful years together, my heart still skips a beat when I see you. ❤️
+Here’s to all our memories… and all the ones still to come.  
+
+HAPPY VALENTINE'S DAY! ❤️`,
+      textContainer
+    );
+
+    showPhotos(); // photos appear on pink background
+  });
+});
+</script>
+
+</body>
+</html>
